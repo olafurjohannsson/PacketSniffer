@@ -1,1 +1,3 @@
+* PacketSniffer in Go
 
+Captures all TCP/HTTP packets and parses them into human readable format.
