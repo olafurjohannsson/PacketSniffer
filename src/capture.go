@@ -19,8 +19,8 @@ const (
 // Start receiving http requests on an output channel
 func (monitor *HttpMonitor) Receive() chan HttpRequest {
 
-	if (monitor.requests == nil) {
-		monitor.requests = make(chan HttpRequest, queue)
+	if (monitor.Requests == nil) {
+		monitor.Requests = make(chan HttpRequest, queue)
 		// go listen..
 		go monitor.listen()
 	}
@@ -28,7 +28,7 @@ func (monitor *HttpMonitor) Receive() chan HttpRequest {
 
 
 	// return channel to our requests
-	return monitor.requests
+	return monitor.Requests
 }
 
 // Init our monitor
@@ -36,15 +36,18 @@ func Start(device string) *HttpMonitor {
 	// Create monitor
 	return &HttpMonitor{
 		TimeStamp: time.Now(),
-		device:    device,
-		requests: nil,
+		Timeout: 30 * time.Second,
+		Device:    device,
+		Promiscous: false,
+		SnapshotLength: 1024,
+		Requests: nil,
 	}
 }
 // Start listen on a network interface
 func (monitor *HttpMonitor) listen() {
-	defer close(monitor.requests)
+	defer close(monitor.Requests)
 	
-	handle, err := pcap.OpenLive(monitor.device, 1024, false, 30 * time.Second)
+	handle, err := pcap.OpenLive(monitor.Device, monitor.SnapshotLength, monitor.Promiscous, monitor.Timeout)
 
 	if err != nil {
 		fmt.Println(err)
@@ -79,7 +82,7 @@ func (monitor *HttpMonitor) listen() {
 				req.SrcPort, req.DstPort = parser.GetSrcDstPorts(packet)
 
 				// put into channel
-				monitor.requests <- req
+				monitor.Requests <- req
 			}
 		}
 	}

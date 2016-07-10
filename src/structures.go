@@ -9,21 +9,23 @@ type Monitor interface {
 
 // The concrete http-monitor type
 type HttpMonitor struct {
-	device    string
-	requests  chan HttpRequest
+	Device    string
+	Requests  chan HttpRequest
 	TimeStamp time.Time
+    Timeout time.Duration
+    SnapshotLength int32
+    Promiscous bool
 }
 
 // An instance of a HTTP request
 type HttpRequest struct {
 	Url  string
 	Host string
-
 	DstPort int
 	SrcPort int
-
 	DstIP string
 	SrcIP string
-
 	TimeStamp time.Time
 }
+
+type HttpRequests []HttpRequest
