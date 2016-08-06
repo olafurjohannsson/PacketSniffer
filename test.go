@@ -19,7 +19,7 @@ func StartMonitor(device string) error {
 		select {
 
 		case httpRequest := <-mon.Receive():
-			fmt.Printf("%s\n", httpRequest.TimeStamp)
+			fmt.Printf("%s\n", httpRequest.Host)
 		}
 
 		return nil
@@ -41,7 +41,7 @@ c.Run()
 Don't forget to import "os" and "os/exec".*/
 func main() {
 	// start ethernet monitor on en0 network device
-	StartMonitor("en0")
+	go StartMonitor("en0")
 
 	// block io on main thread
 	select {}
