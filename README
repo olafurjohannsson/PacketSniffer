@@ -1,3 +1,9 @@
 * PacketSniffer in Go
 
 Captures all TCP/HTTP packets and parses them into human readable format.
+
+This is a really old project so if you are using it be aware.
+
+author: Ólafur Aron Jóhannsson<br>
+email: olafurjohannss@gmail.com<br>
+website: https://olafuraron.is<br>
